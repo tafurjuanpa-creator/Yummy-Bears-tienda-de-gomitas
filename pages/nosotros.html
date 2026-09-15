@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JUMMY - Nosotros</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rubik+Mono+One&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            overflow-x: hidden;
+            font-family: 'Press Start 2P', monospace;
+            background-color: #0a0a1a;
+        }
+
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .bg-bear {
+            position: absolute;
+            opacity: 0.18;
+        }
+
+        .main-container {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* NAV BAR */
+        .nav-bar {
+            width: 94%;
+            max-width: 1000px;
+            background: linear-gradient(135deg, #a8edea 0%, #5cb8e4 40%, #2980b9 70%, #1a5276 100%);
+            border: 3px solid #7cfc00;
+            border-radius: 30px;
+            padding: 18px 25px;
+            display: flex;
+            justify-content: center;
+            gap: 28px;
+            flex-wrap: wrap;
+            box-shadow: 0 0 25px rgba(124, 252, 0, 0.25), 0 8px 30px rgba(0,0,0,0.4);
+            animation: navAppear 0.8s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-bar::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border: 2px solid rgba(255,255,255,0.08);
+            border-radius: 30px;
+            pointer-events: none;
+        }
+
+        @keyframes navAppear {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .nav-link {
+            color: #fff;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 11px;
+            text-decoration: none;
+            padding: 8px 12px;
+            transition: all 0.3s ease;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.4);
+            position: relative;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background: #7cfc00;
+            transition: width 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-link:hover {
+            color: #7cfc00;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.6);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            color: #7cfc00;
+            text-shadow: 0 0 10px rgba(124, 252, 0, 0.4), 2px 2px 0 rgba(0,0,0,0.4);
+        }
+
+        .nav-link.magenta {
+            color: #e040fb;
+        }
+
+        .nav-link.magenta:hover {
+            color: #7cfc00;
+        }
+
+        /* NOSOTROS TITLE */
+        .nosotros-title-box {
+            margin-top: 30px;
+            border: 3px solid #1a6b3c;
+            border-radius: 18px;
+            padding: 14px 50px;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(5px);
+            animation: titleAppear 0.8s ease-out 0.3s both;
+        }
+
+        @keyframes titleAppear {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .nosotros-title {
+            font-family: 'Rubik Mono One', sans-serif;
+            font-size: 52px;
+            color: #2dd4bf;
+            letter-spacing: 8px;
+            text-shadow: 3px 3px 0 rgba(0,0,0,0.5), 0 0 20px rgba(45, 212, 191, 0.3);
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { text-shadow: 3px 3px 0 rgba(0,0,0,0.5), 0 0 20px rgba(45, 212, 191, 0.3); }
+            50% { text-shadow: 3px 3px 0 rgba(0,0,0,0.5), 0 0 35px rgba(45, 212, 191, 0.5), 0 0 60px rgba(45, 212, 191, 0.2); }
+        }
+
+        /* CONTENT COLUMNS */
+        .content-section {
+            width: 94%;
+            max-width: 1100px;
+            display: flex;
+            gap: 25px;
+            margin-top: 35px;
+            animation: contentAppear 0.8s ease-out 0.6s both;
+            align-items: stretch;
+        }
+
+        @keyframes contentAppear {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* DESCRIPTION BOX */
+        .desc-box {
+            flex: 1.2;
+            background: linear-gradient(135deg, #1a4a4a 0%, #0d3636 50%, #0a2a2a 100%);
+            border: 3px solid #7cfc00;
+            border-radius: 22px;
+            padding: 28px 24px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(124, 252, 0, 0.15), 0 10px 30px rgba(0,0,0,0.4);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .desc-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #7cfc00, #00e5ff, #e040fb, #7cfc00);
+            background-size: 300% 100%;
+            animation: borderShimmer 4s linear infinite;
+        }
+
+        @keyframes borderShimmer {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 300% 50%; }
+        }
+
+        .desc-text {
+            font-family: 'Rubik Mono One', sans-serif;
+            font-size: 17px;
+            color: #a8edea;
+            line-height: 1.8;
+            letter-spacing: 1px;
+            text-align: center;
+            text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
+        }
+
+        .desc-bears {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            display: flex;
+            gap: 5px;
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+
+        .desc-box:hover .desc-bears {
+            opacity: 0.8;
+        }
+
+        /* MISION BOX */
+        .mision-box {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            position: relative;
+        }
+
+        .mision-header {
+            background: #0d1b3e;
+            border: 3px solid #7cfc00;
+            border-bottom: none;
+            border-radius: 18px 18px 0 0;
+            padding: 10px 24px;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(124, 252, 0, 0.12);
+        }
+
+        .mision-header-text {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 14px;
+            color: #fff;
+            letter-spacing: 4px;
+            text-shadow: 0 0 10px rgba(0, 229, 255, 0.4), 2px 2px 0 rgba(0,0,0,0.4);
+        }
+
+        .mision-body {
+            background: linear-gradient(135deg, #1a3a6e 0%, #12294a 50%, #0d1b3e 100%);
+            border: 3px solid #7cfc00;
+            border-top: none;
+            border-radius: 0 0 18px 18px;
+            padding: 24px 22px;
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.35);
+            display: flex;
+            align-items: center;
+        }
+
+        .mision-body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #00e5ff, #5cb8e4, #00e5ff);
+            background-size: 200% 100%;
+            animation: borderShimmer 3s linear infinite;
+        }
+
+        .mision-text {
+            font-family: 'Rubik Mono One', sans-serif;
+            font-size: 15px;
+            color: #b8d8f8;
+            line-height: 1.9;
+            text-align: center;
+            letter-spacing: 0.5px;
+            text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
+        }
+
+        .mision-bear {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            opacity: 0.4;
+            transition: opacity 0.3s ease;
+        }
+
+        .mision-box:hover .mision-bear {
+            opacity: 0.7;
+        }
+
+        /* VISION BOX */
+        .vision-box {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            position: relative;
+        }
+
+        .vision-header {
+            background: #0d1b3e;
+            border: 3px solid #7cfc00;
+            border-bottom: none;
+            border-radius: 18px 18px 0 0;
+            padding: 10px 24px;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(124, 252, 0, 0.12);
+        }
+
+        .vision-header-text {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 14px;
+            color: #fff;
+            letter-spacing: 4px;
+            text-shadow: 0 0 10px rgba(224, 64, 251, 0.4), 2px 2px 0 rgba(0,0,0,0.4);
+        }
+
+        .vision-body {
+            background: linear-gradient(135deg, #1a5a6e 0%, #124a5a 50%, #0d3a4e 100%);
+            border: 3px solid #7cfc00;
+            border-top: none;
+            border-radius: 0 0 18px 18px;
+            padding: 24px 22px;
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.35);
+            display: flex;
+            align-items: center;
+        }
+
+        .vision-body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #e040fb, #9c27b0, #e040fb);
+            background-size: 200% 100%;
+            animation: borderShimmer 3s linear infinite;
+        }
+
+        .vision-text {
+            font-family: 'Rubik Mono One', sans-serif;
+            font-size: 15px;
+            color: #a8e8ea;
+            line-height: 1.9;
+            text-align: center;
+            letter-spacing: 0.5px;
+            text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
+        }
+
+        /* VOLVER BUTTON */
+        .btn-volver-wrap {
+            margin-top: 30px;
+            animation: btnAppear 0.6s ease-out 1s both;
+        }
+
+        @keyframes btnAppear {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .btn-volver {
+            background: linear-gradient(135deg, #a8edea, #5cdecf);
+            color: #0d0d0d;
+            border: none;
+            padding: 16px 36px;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 10px;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(168, 237, 234, 0.3), 3px 3px 0 rgba(0,0,0,0.3);
+            line-height: 1.8;
+            text-align: center;
+            letter-spacing: 1px;
+            display: inline-block;
+        }
+
+        .btn-volver:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 0 35px rgba(168, 237, 234, 0.5), 3px 6px 0 rgba(0,0,0,0.3);
+            background: linear-gradient(135deg, #b8f5f0, #6de8d9);
+        }
+
+        /* FOOTER */
+        .footer-credit {
+            margin-top: 25px;
+            font-size: 10px;
+            color: rgba(255,255,255,0.25);
+            font-family: 'Press Start 2P', monospace;
+            letter-spacing: 2px;
+        }
+
+        /* SPARKLES */
+        .sparkle {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .sparkle::before, .sparkle::after {
+            content: '';
+            position: absolute;
+            background: currentColor;
+        }
+
+        .sparkle::before {
+            width: 8px;
+            height: 2px;
+            top: 3px;
+            left: 0;
+            border-radius: 2px;
+        }
+
+        .sparkle::after {
+            width: 2px;
+            height: 8px;
+            top: 0;
+            left: 3px;
+            border-radius: 2px;
+        }
+
+        .sparkle:nth-child(1) { top: 10%; left: 48%; color: #00e5ff; animation: sparkleAnim 2s ease-in-out infinite 0s; }
+        .sparkle:nth-child(2) { top: 20%; right: 12%; color: #e040fb; animation: sparkleAnim 2s ease-in-out infinite 0.4s; }
+        .sparkle:nth-child(3) { top: 55%; left: 15%; color: #ffd700; animation: sparkleAnim 2s ease-in-out infinite 0.8s; }
+        .sparkle:nth-child(4) { bottom: 25%; right: 20%; color: #7cfc00; animation: sparkleAnim 2s ease-in-out infinite 1.2s; }
+        .sparkle:nth-child(5) { top: 40%; right: 6%; color: #ff4081; animation: sparkleAnim 2s ease-in-out infinite 1.6s; }
+
+        @keyframes sparkleAnim {
+            0%, 100% { transform: scale(0) rotate(0deg); opacity: 0; }
+            50% { transform: scale(1.5) rotate(45deg); opacity: 1; }
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .content-section {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .nosotros-title {
+                font-size: 38px;
+                letter-spacing: 5px;
+            }
+            .nav-bar {
+                gap: 15px;
+                padding: 14px 18px;
+            }
+            .nav-link { font-size: 9px; padding: 6px 8px; }
+            .desc-text { font-size: 14px; }
+            .mision-text, .vision-text { font-size: 13px; }
+        }
+
+        @media (max-width: 600px) {
+            .nosotros-title { font-size: 28px; letter-spacing: 3px; }
+            .nav-bar { gap: 10px; }
+            .nav-link { font-size: 7px; padding: 5px 6px; }
+            .desc-text { font-size: 12px; line-height: 1.7; }
+            .mision-text, .vision-text { font-size: 11px; line-height: 1.7; }
+            .content-section { padding: 0 5px; }
+            .btn-volver { font-size: 8px; padding: 12px 22px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Gummy Pattern -->
+    <div class="bg-pattern" id="bgPattern"></div>
+
+    <!-- Sparkles -->
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+
+    <div class="main-container">
+
+        <!-- NAV BAR -->
+        <nav class="nav-bar">
+            <a href="index.html" class="nav-link">INICIO</a>
+            <a href="nosotros.html" class="nav-link active">NOSOTROS</a>
+            <a href="sabores.html" class="nav-link">NUESTROS<br>PRODUCTOS</a>
+           <!-- <a href="sabores.html" class="nav-link magenta">SABORES</a>-->
+            <a href="tienda.html" class="nav-link">TIENDA</a>
+           <!-- <a href="#" class="nav-link">BLOG</a>-->
+            <a href="#" class="nav-link">CONTACTO</a>
+        </nav>
+
+        <!-- NOSOTROS TITLE -->
+        <div class="nosotros-title-box">
+            <h1 class="nosotros-title">NOSOTROS</h1>
+        </div>
+
+        <!-- THREE COLUMNS -->
+        <div class="content-section">
+
+            <!-- LEFT: DESCRIPTION -->
+            <div class="desc-box">
+                <p class="desc-text">
+                    JUMMY GUMMY BEARS es una tienda de gomitas de diversas formas y texturas adaptadas para cada persona. Creada por JUANPA Y TAFUR, buscamos llevar dulzura y diversión a cada rincón con nuestras gomitas artesanales de sabores únicos e irresistibles.
+                </p>
+                <div class="desc-bears">
+                    <!-- Orange sugar gummy bear 1 -->
+                    <svg width="40" height="52" viewBox="0 0 100 130">
+                        <circle cx="20" cy="20" r="14" fill="#ff8c00" opacity="0.9"/>
+                        <circle cx="80" cy="20" r="14" fill="#ff8c00" opacity="0.9"/>
+                        <circle cx="20" cy="20" r="7" fill="#ffb347" opacity="0.6"/>
+                        <circle cx="80" cy="20" r="7" fill="#ffb347" opacity="0.6"/>
+                        <ellipse cx="50" cy="40" rx="35" ry="28" fill="#ff8c00" opacity="0.9"/>
+                        <ellipse cx="50" cy="90" rx="30" ry="32" fill="#ff8c00" opacity="0.9"/>
+                        <ellipse cx="50" cy="90" rx="18" ry="20" fill="#ffb347" opacity="0.6"/>
+                        <ellipse cx="20" cy="75" rx="10" ry="18" fill="#ff8c00" opacity="0.9"/>
+                        <ellipse cx="80" cy="75" rx="10" ry="18" fill="#ff8c00" opacity="0.9"/>
+                        <ellipse cx="35" cy="118" rx="12" ry="16" fill="#ff8c00" opacity="0.9"/>
+                        <ellipse cx="65" cy="118" rx="12" ry="16" fill="#ff8c00" opacity="0.9"/>
+                        <circle cx="35" cy="50" r="2" fill="rgba(255,255,255,0.35)"/>
+                        <circle cx="60" cy="42" r="1.5" fill="rgba(255,255,255,0.3)"/>
+                        <circle cx="42" cy="80" r="2" fill="rgba(255,255,255,0.35)"/>
+                        <circle cx="65" cy="98" r="1.5" fill="rgba(255,255,255,0.3)"/>
+                        <circle cx="28" cy="68" r="1.5" fill="rgba(255,255,255,0.25)"/>
+                        <circle cx="75" cy="85" r="2" fill="rgba(255,255,255,0.3)"/>
+                    </svg>
+                    <!-- Orange sugar gummy bear 2 -->
+                    <svg width="35" height="46" viewBox="0 0 100 130">
+                        <circle cx="20" cy="20" r="14" fill="#ff6b2b" opacity="0.9"/>
+                        <circle cx="80" cy="20" r="14" fill="#ff6b2b" opacity="0.9"/>
+                        <circle cx="20" cy="20" r="7" fill="#ffa060" opacity="0.6"/>
+                        <circle cx="80" cy="20" r="7" fill="#ffa060" opacity="0.6"/>
+                        <ellipse cx="50" cy="40" rx="35" ry="28" fill="#ff6b2b" opacity="0.9"/>
+                        <ellipse cx="50" cy="90" rx="30" ry="32" fill="#ff6b2b" opacity="0.9"/>
+                        <ellipse cx="50" cy="90" rx="18" ry="20" fill="#ffa060" opacity="0.6"/>
+                        <ellipse cx="20" cy="75" rx="10" ry="18" fill="#ff6b2b" opacity="0.9"/>
+                        <ellipse cx="80" cy="75" rx="10" ry="18" fill="#ff6b2b" opacity="0.9"/>
+                        <ellipse cx="35" cy="118" rx="12" ry="16" fill="#ff6b2b" opacity="0.9"/>
+                        <ellipse cx="65" cy="118" rx="12" ry="16" fill="#ff6b2b" opacity="0.9"/>
+                        <circle cx="38" cy="48" r="1.8" fill="rgba(255,255,255,0.3)"/>
+                        <circle cx="62" cy="38" r="1.5" fill="rgba(255,255,255,0.25)"/>
+                        <circle cx="40" cy="78" r="2" fill="rgba(255,255,255,0.3)"/>
+                        <circle cx="68" cy="95" r="1.5" fill="rgba(255,255,255,0.25)"/>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- CENTER: MISIÓN -->
+            <div class="mision-box">
+                <div class="mision-header">
+                    <h2 class="mision-header-text">MISIÓN</h2>
+                </div>
+                <div class="mision-body">
+                    <p class="mision-text">
+                        Crear experiencias dulces y memorables a través de gomitas artesanales de la más alta calidad, elaboradas con ingredientes naturales y sabores innovadores que despierten la alegría en cada persona, sin importar su edad.
+                    </p>
+                    <div class="mision-bear">
+                        <svg width="40" height="52" viewBox="0 0 100 130">
+                            <circle cx="20" cy="20" r="14" fill="#ff8c00" opacity="0.9"/>
+                            <circle cx="80" cy="20" r="14" fill="#ff8c00" opacity="0.9"/>
+                            <circle cx="20" cy="20" r="7" fill="#ffb347" opacity="0.6"/>
+                            <circle cx="80" cy="20" r="7" fill="#ffb347" opacity="0.6"/>
+                            <ellipse cx="50" cy="40" rx="35" ry="28" fill="#ff8c00" opacity="0.9"/>
+                            <ellipse cx="50" cy="90" rx="30" ry="32" fill="#ff8c00" opacity="0.9"/>
+                            <ellipse cx="50" cy="90" rx="18" ry="20" fill="#ffb347" opacity="0.6"/>
+                            <ellipse cx="20" cy="75" rx="10" ry="18" fill="#ff8c00" opacity="0.9"/>
+                            <ellipse cx="80" cy="75" rx="10" ry="18" fill="#ff8c00" opacity="0.9"/>
+                            <ellipse cx="35" cy="118" rx="12" ry="16" fill="#ff8c00" opacity="0.9"/>
+                            <ellipse cx="65" cy="118" rx="12" ry="16" fill="#ff8c00" opacity="0.9"/>
+                            <circle cx="36" cy="50" r="2" fill="rgba(255,255,255,0.35)"/>
+                            <circle cx="62" cy="42" r="1.5" fill="rgba(255,255,255,0.3)"/>
+                            <circle cx="42" cy="82" r="2" fill="rgba(255,255,255,0.35)"/>
+                            <circle cx="66" cy="96" r="1.5" fill="rgba(255,255,255,0.3)"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT: VISIÓN -->
+            <div class="vision-box">
+                <div class="vision-header">
+                    <h2 class="vision-header-text">VISIÓN</h2>
+                </div>
+                <div class="vision-body">
+                    <p class="vision-text">
+                        Ser la marca de gomitas artesanales más reconocida de Latinoamérica, inspirando momentos de felicidad y conexión entre las personas, expandiendo nuestra presencia a nivel mundial con productos creativos, saludables y llenos de sabor.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- VOLVER BUTTON -->
+        <div class="btn-volver-wrap">
+            <a href="../index.html" class="btn-volver">VOLVER A LA PÁGINA<br>DEL CONTENIDO</a>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer-credit">JUANPA Y TAFUR</div>
+
+    </div>
+
+    <script>
+        const bgPattern = document.getElementById('bgPattern');
+        const colors = ['#ff4444', '#ff8c00', '#ffd700', '#7cfc00', '#ff69b4', '#87ceeb', '#9b59b6', '#2ecc71', '#e040fb', '#00e5ff'];
+        const rotations = [-25, -15, -5, 0, 5, 15, 25];
+
+        function createBgBear() {
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            const size = 28 + Math.random() * 45;
+            svg.setAttribute('width', size);
+            svg.setAttribute('height', size * 1.3);
+            svg.setAttribute('viewBox', '0 0 100 130');
+            svg.classList.add('bg-bear');
+
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const x = Math.random() * window.innerWidth;
+            const y = Math.random() * window.innerHeight;
+            const rot = rotations[Math.floor(Math.random() * rotations.length)];
+
+            svg.style.left = x + 'px';
+            svg.style.top = y + 'px';
+            svg.style.transform = 'rotate(' + rot + 'deg)';
+
+            const sugarCount = 3 + Math.floor(Math.random() * 4);
+            let sugarDots = '';
+            for (let i = 0; i < sugarCount; i++) {
+                const sx = 20 + Math.random() * 60;
+                const sy = 30 + Math.random() * 80;
+                const sr = 1 + Math.random() * 1.5;
+                sugarDots += '<circle cx="' + sx + '" cy="' + sy + '" r="' + sr + '" fill="rgba(255,255,255,0.3)"/>';
+            }
+
+            svg.innerHTML = '<circle cx="20" cy="20" r="14" fill="' + color + '" opacity="0.9"/>' +
+                '<circle cx="80" cy="20" r="14" fill="' + color + '" opacity="0.9"/>' +
+                '<circle cx="20" cy="20" r="7" fill="' + color + '" opacity="0.55"/>' +
+                '<circle cx="80" cy="20" r="7" fill="' + color + '" opacity="0.55"/>' +
+                '<ellipse cx="50" cy="40" rx="35" ry="28" fill="' + color + '" opacity="0.9"/>' +
+                '<ellipse cx="50" cy="90" rx="30" ry="32" fill="' + color + '" opacity="0.9"/>' +
+                '<ellipse cx="50" cy="90" rx="18" ry="20" fill="' + color + '" opacity="0.55"/>' +
+                '<ellipse cx="20" cy="75" rx="10" ry="18" fill="' + color + '" opacity="0.9"/>' +
+                '<ellipse cx="80" cy="75" rx="10" ry="18" fill="' + color + '" opacity="0.9"/>' +
+                '<ellipse cx="35" cy="118" rx="12" ry="16" fill="' + color + '" opacity="0.9"/>' +
+                '<ellipse cx="65" cy="118" rx="12" ry="16" fill="' + color + '" opacity="0.9"/>' +
+                sugarDots;
+
+            bgPattern.appendChild(svg);
+        }
+
+        const bearCount = Math.floor((window.innerWidth * window.innerHeight) / 7000);
+        for (let i = 0; i < bearCount; i++) {
+            createBgBear();
+        }
+    </script>
+</body>
+</html>

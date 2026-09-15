@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JUMMY - Gummy Bears</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rubik+Mono+One&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            overflow-x: hidden;
+            font-family: 'Press Start 2P', monospace;
+            background-color: #1a0a2e;
+        }
+
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            filter: blur(1.5px);
+            opacity: 0.6;
+        }
+
+        .bg-bear {
+            position: absolute;
+            opacity: 0.35;
+        }
+
+        .main-container {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .top-label {
+            font-family: 'Rubik Mono One', sans-serif;
+            font-size: 22px;
+            color: #1a1a2e;
+            letter-spacing: 6px;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 0 rgba(255,255,255,0.3);
+            animation: fadeDown 1s ease-out;
+        }
+
+        @keyframes fadeDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .center-panel {
+            width: 90%;
+            max-width: 950px;
+            min-height: 520px;
+            background: linear-gradient(135deg, #a8edea 0%, #5cb8e4 40%, #2980b9 70%, #1a5276 100%);
+            border: 3px solid #7cfc00;
+            border-radius: 30px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(124, 252, 0, 0.3), 0 0 60px rgba(92, 184, 228, 0.2), 0 20px 60px rgba(0,0,0,0.4);
+            animation: panelAppear 0.8s ease-out;
+        }
+
+        @keyframes panelAppear {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .worms-container {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            display: flex;
+            gap: 20px;
+        }
+
+        .worm {
+            animation: wormWiggle 2s ease-in-out infinite;
+        }
+
+        .worm:nth-child(2) { animation-delay: 0.5s; }
+        .worm:nth-child(3) { animation-delay: 1s; }
+
+        @keyframes wormWiggle {
+            0%, 100% { transform: rotate(-5deg) translateY(0); }
+            25% { transform: rotate(3deg) translateY(-5px); }
+            50% { transform: rotate(-3deg) translateY(2px); }
+            75% { transform: rotate(5deg) translateY(-3px); }
+        }
+
+        .nav-bar {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 25px 20px 10px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 5;
+        }
+
+        .nav-link {
+            color: #fff;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 11px;
+            text-decoration: none;
+            padding: 8px 12px;
+            transition: all 0.3s ease;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.4);
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background: #7cfc00;
+            transition: width 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-link:hover {
+            color: #7cfc00;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.6);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            color: #7cfc00;
+        }
+
+        .center-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 40px;
+            position: relative;
+            z-index: 3;
+            min-height: 380px;
+        }
+
+        .side-bear-left {
+            position: absolute;
+            left: -20px;
+            top: 50%;
+            transform: translateY(-50%) rotate(-10deg);
+            opacity: 0.2;
+            z-index: 2;
+            animation: sideFloat 4s ease-in-out infinite;
+        }
+
+        .side-bear-right {
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%) rotate(10deg);
+            opacity: 0.2;
+            z-index: 2;
+            animation: sideFloat 4s ease-in-out infinite 1s;
+        }
+
+        @keyframes sideFloat {
+            0%, 100% { transform: translateY(-50%) rotate(-10deg); }
+            50% { transform: translateY(calc(-50% - 15px)) rotate(-10deg); }
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 20px;
+            animation: logoAppear 1.2s ease-out;
+        }
+
+        @keyframes logoAppear {
+            from { opacity: 0; transform: scale(0.5) rotate(-5deg); }
+            to { opacity: 1; transform: scale(1) rotate(0); }
+        }
+
+        .logo-text {
+            font-family: 'Rubik Mono One', sans-serif;
+            font-size: 80px;
+            color: #0d0d0d;
+            letter-spacing: 8px;
+            text-shadow: 4px 4px 0 rgba(255,255,255,0.15), 0 0 20px rgba(0,0,0,0.2);
+            position: relative;
+            display: inline-block;
+        }
+
+        .logo-text span {
+            display: inline-block;
+            animation: letterWave 2s ease-in-out infinite;
+        }
+
+        .logo-text span:nth-child(1) { animation-delay: 0s; }
+        .logo-text span:nth-child(2) { animation-delay: 0.1s; }
+        .logo-text span:nth-child(3) { animation-delay: 0.2s; }
+        .logo-text span:nth-child(4) { animation-delay: 0.3s; }
+        .logo-text span:nth-child(5) { animation-delay: 0.4s; }
+
+        @keyframes letterWave {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .center-bear {
+            width: 200px;
+            height: 260px;
+            position: relative;
+            margin: 15px auto;
+            animation: bearFloat 3s ease-in-out infinite;
+            filter: drop-shadow(0 15px 25px rgba(0,0,0,0.4));
+        }
+
+        @keyframes bearFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        .subtitle {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 16px;
+            color: #fff;
+            letter-spacing: 4px;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+            margin-top: 10px;
+            animation: subtitleGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes subtitleGlow {
+            0%, 100% { text-shadow: 2px 2px 0 rgba(0,0,0,0.5); }
+            50% { text-shadow: 2px 2px 0 rgba(0,0,0,0.5), 0 0 15px rgba(124, 252, 0, 0.5); }
+        }
+
+        .contacto {
+            position: absolute;
+            bottom: 25px;
+            right: 35px;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 12px;
+            color: #fff;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.4);
+            z-index: 5;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .contacto:hover {
+            color: #7cfc00;
+            transform: scale(1.1);
+        }
+
+        .cta-bar {
+            width: 90%;
+            max-width: 950px;
+            margin-top: 20px;
+            background: linear-gradient(90deg, #1a5276, #2980b9, #5cb8e4);
+            border: 3px solid #7cfc00;
+            border-radius: 18px;
+            padding: 18px 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+            animation: ctaAppear 1s ease-out 0.5s both;
+        }
+
+        @keyframes ctaAppear {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .cta-bar:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 35px rgba(124, 252, 0, 0.3), 0 5px 25px rgba(0,0,0,0.3);
+            border-color: #a8ff60;
+        }
+
+        .cta-arrow {
+            width: 40px;
+            height: 40px;
+            background: #00e5ff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #0d0d0d;
+            font-weight: bold;
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+            animation: arrowPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes arrowPulse {
+            0%, 100% { box-shadow: 0 0 15px rgba(0, 229, 255, 0.4); }
+            50% { box-shadow: 0 0 25px rgba(0, 229, 255, 0.7); }
+        }
+
+        .cta-text {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 15px;
+            color: #fff;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+        }
+
+        .footer-credit {
+            margin-top: 25px;
+            font-size: 11px;
+            color: rgba(255,255,255,0.4);
+            font-family: 'Press Start 2P', monospace;
+            letter-spacing: 2px;
+        }
+
+        @media (max-width: 768px) {
+            .logo-text { font-size: 48px; }
+            .center-bear { width: 140px; height: 182px; }
+            .nav-bar { gap: 15px; }
+            .nav-link { font-size: 9px; padding: 6px 8px; }
+            .center-panel { min-height: 420px; width: 95%; }
+            .cta-text { font-size: 11px; }
+            .cta-bar { padding: 14px 25px; }
+            .side-bear-left, .side-bear-right { display: none; }
+            .subtitle { font-size: 12px; }
+        }
+
+        @media (max-width: 480px) {
+            .logo-text { font-size: 36px; letter-spacing: 4px; }
+            .nav-bar { gap: 10px; }
+            .nav-link { font-size: 7px; }
+            .center-bear { width: 110px; height: 143px; }
+            .top-label { font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-pattern" id="bgPattern"></div>
+
+    <div class="main-container">
+
+        <div class="top-label">JUMMY</div>
+
+        <div class="center-panel">
+
+            <div class="worms-container">
+                <svg class="worm" width="70" height="55" viewBox="0 0 70 55">
+                    <path d="M10,45 Q15,20 25,25 Q35,30 40,15 Q45,5 55,10 Q60,12 65,8" stroke="#9b59b6" stroke-width="12" fill="none" stroke-linecap="round"/>
+                    <circle cx="65" cy="8" r="5" fill="#9b59b6"/>
+                    <circle cx="62" cy="5" r="2" fill="#fff"/>
+                    <circle cx="68" cy="5" r="2" fill="#fff"/>
+                    <circle cx="62" cy="5" r="1" fill="#333"/>
+                    <circle cx="68" cy="5" r="1" fill="#333"/>
+                </svg>
+                <svg class="worm" width="80" height="55" viewBox="0 0 80 55">
+                    <path d="M5,35 Q10,10 20,18 Q30,26 38,12 Q46,0 56,8 Q62,13 70,5" stroke="#8e44ad" stroke-width="13" fill="none" stroke-linecap="round"/>
+                    <circle cx="70" cy="5" r="6" fill="#8e44ad"/>
+                    <circle cx="67" cy="2" r="2.5" fill="#fff"/>
+                    <circle cx="73" cy="2" r="2.5" fill="#fff"/>
+                    <circle cx="67" cy="2" r="1.2" fill="#333"/>
+                    <circle cx="73" cy="2" r="1.2" fill="#333"/>
+                </svg>
+                <svg class="worm" width="65" height="50" viewBox="0 0 65 50">
+                    <path d="M8,40 Q12,18 22,22 Q32,28 38,12 Q43,3 52,8 Q58,11 62,6" stroke="#a855f7" stroke-width="11" fill="none" stroke-linecap="round"/>
+                    <circle cx="62" cy="6" r="5" fill="#a855f7"/>
+                    <circle cx="59" cy="3" r="2" fill="#fff"/>
+                    <circle cx="65" cy="3" r="2" fill="#fff"/>
+                    <circle cx="59" cy="3" r="1" fill="#333"/>
+                    <circle cx="65" cy="3" r="1" fill="#333"/>
+                </svg>
+            </div>
+
+            <nav class="nav-bar">
+                <a href="#" class="nav-link active">INICIO</a>
+                <a href="pages/nosotros.html" class="nav-link">NOSOTROS</a>
+               <a href="pages/sabores.html" class="nav-link">NUESTROS PRODUCTOS</a>
+                 <!--<a href="" class="nav-link">SABORES</a>-->
+                <a href="pages/tienda.html" class="nav-link">TIENDA</a>
+            </nav>
+
+            <div class="center-content">
+
+                <div class="side-bear-left">
+                    <svg width="180" height="240" viewBox="0 0 140 180">
+                        <circle cx="30" cy="30" r="18" fill="#5cb8e4"/>
+                        <circle cx="110" cy="30" r="18" fill="#5cb8e4"/>
+                        <circle cx="30" cy="30" r="9" fill="#a8edea"/>
+                        <circle cx="110" cy="30" r="9" fill="#a8edea"/>
+                        <ellipse cx="70" cy="55" rx="42" ry="38" fill="#5cb8e4"/>
+                        <ellipse cx="70" cy="115" rx="38" ry="42" fill="#5cb8e4"/>
+                        <ellipse cx="70" cy="115" rx="24" ry="28" fill="#a8edea"/>
+                        <ellipse cx="25" cy="95" rx="14" ry="22" fill="#5cb8e4" transform="rotate(-15 25 95)"/>
+                        <ellipse cx="115" cy="95" rx="14" ry="22" fill="#5cb8e4" transform="rotate(15 115 95)"/>
+                        <ellipse cx="50" cy="155" rx="16" ry="22" fill="#5cb8e4"/>
+                        <ellipse cx="90" cy="155" rx="16" ry="22" fill="#5cb8e4"/>
+                    </svg>
+                </div>
+
+                <div class="side-bear-right">
+                    <svg width="180" height="240" viewBox="0 0 140 180">
+                        <circle cx="30" cy="30" r="18" fill="#5cb8e4"/>
+                        <circle cx="110" cy="30" r="18" fill="#5cb8e4"/>
+                        <circle cx="30" cy="30" r="9" fill="#a8edea"/>
+                        <circle cx="110" cy="30" r="9" fill="#a8edea"/>
+                        <ellipse cx="70" cy="55" rx="42" ry="38" fill="#5cb8e4"/>
+                        <ellipse cx="70" cy="115" rx="38" ry="42" fill="#5cb8e4"/>
+                        <ellipse cx="70" cy="115" rx="24" ry="28" fill="#a8edea"/>
+                        <ellipse cx="25" cy="95" rx="14" ry="22" fill="#5cb8e4" transform="rotate(15 25 95)"/>
+                        <ellipse cx="115" cy="95" rx="14" ry="22" fill="#5cb8e4" transform="rotate(-15 115 95)"/>
+                        <ellipse cx="50" cy="155" rx="16" ry="22" fill="#5cb8e4"/>
+                        <ellipse cx="90" cy="155" rx="16" ry="22" fill="#5cb8e4"/>
+                    </svg>
+                </div>
+
+                <div class="logo-container">
+                    <div class="logo-text">
+                        <span>J</span><span>U</span><span>M</span><span>M</span><span>Y</span>
+                    </div>
+                </div>
+
+                <div class="center-bear">
+                    <svg viewBox="0 0 200 260" width="200" height="260">
+                        <defs>
+                            <radialGradient id="bodyGrad" cx="35%" cy="30%" r="65%">
+                                <stop offset="0%" stop-color="#ff6b6b"/>
+                                <stop offset="40%" stop-color="#ee4444"/>
+                                <stop offset="100%" stop-color="#cc2222"/>
+                            </radialGradient>
+                            <radialGradient id="highlight" cx="30%" cy="25%" r="30%">
+                                <stop offset="0%" stop-color="rgba(255,255,255,0.6)"/>
+                                <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+                            </radialGradient>
+                            <radialGradient id="bellyGrad" cx="50%" cy="40%" r="50%">
+                                <stop offset="0%" stop-color="#ff8888"/>
+                                <stop offset="100%" stop-color="#ee5555"/>
+                            </radialGradient>
+                            <radialGradient id="earGrad" cx="40%" cy="35%" r="55%">
+                                <stop offset="0%" stop-color="#ff6b6b"/>
+                                <stop offset="100%" stop-color="#cc2222"/>
+                            </radialGradient>
+                            <radialGradient id="innerEar" cx="40%" cy="35%" r="50%">
+                                <stop offset="0%" stop-color="#ff9999"/>
+                                <stop offset="100%" stop-color="#ee6666"/>
+                            </radialGradient>
+                        </defs>
+                        <ellipse cx="100" cy="248" rx="55" ry="10" fill="rgba(0,0,0,0.2)"/>
+                        <circle cx="48" cy="42" r="26" fill="url(#earGrad)"/>
+                        <circle cx="48" cy="42" r="14" fill="url(#innerEar)"/>
+                        <circle cx="38" cy="34" r="5" fill="rgba(255,255,255,0.3)"/>
+                        <circle cx="152" cy="42" r="26" fill="url(#earGrad)"/>
+                        <circle cx="152" cy="42" r="14" fill="url(#innerEar)"/>
+                        <circle cx="142" cy="34" r="5" fill="rgba(255,255,255,0.3)"/>
+                        <ellipse cx="100" cy="75" rx="60" ry="52" fill="url(#bodyGrad)"/>
+                        <ellipse cx="82" cy="58" rx="28" ry="22" fill="url(#highlight)"/>
+                        <ellipse cx="80" cy="68" rx="10" ry="11" fill="#fff"/>
+                        <ellipse cx="120" cy="68" rx="10" ry="11" fill="#fff"/>
+                        <ellipse cx="83" cy="67" rx="5.5" ry="6" fill="#2c2c2c"/>
+                        <ellipse cx="123" cy="67" rx="5.5" ry="6" fill="#2c2c2c"/>
+                        <circle cx="80" cy="63" r="2.5" fill="#fff"/>
+                        <circle cx="120" cy="63" r="2.5" fill="#fff"/>
+                        <ellipse cx="100" cy="85" rx="8" ry="5" fill="url(#innerEar)"/>
+                        <path d="M88,93 Q100,103 112,93" stroke="#cc2222" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                        <ellipse cx="100" cy="160" rx="56" ry="62" fill="url(#bodyGrad)"/>
+                        <ellipse cx="80" cy="138" rx="26" ry="28" fill="url(#highlight)"/>
+                        <ellipse cx="100" cy="162" rx="35" ry="40" fill="url(#bellyGrad)"/>
+                        <ellipse cx="88" cy="142" rx="14" ry="12" fill="rgba(255,255,255,0.25)"/>
+                        <ellipse cx="38" cy="138" rx="20" ry="32" fill="url(#bodyGrad)" transform="rotate(-20 38 138)"/>
+                        <ellipse cx="26" cy="120" rx="6" ry="8" fill="rgba(255,255,255,0.2)" transform="rotate(-20 26 120)"/>
+                        <ellipse cx="162" cy="138" rx="20" ry="32" fill="url(#bodyGrad)" transform="rotate(20 162 138)"/>
+                        <ellipse cx="174" cy="120" rx="6" ry="8" fill="rgba(255,255,255,0.2)" transform="rotate(20 174 120)"/>
+                        <ellipse cx="70" cy="215" rx="22" ry="30" fill="url(#bodyGrad)"/>
+                        <ellipse cx="70" cy="238" rx="17" ry="9" fill="url(#innerEar)"/>
+                        <ellipse cx="130" cy="215" rx="22" ry="30" fill="url(#bodyGrad)"/>
+                        <ellipse cx="130" cy="238" rx="17" ry="9" fill="url(#innerEar)"/>
+                    </svg>
+                </div>
+
+                <div class="subtitle">GUMMY BEARS</div>
+            </div>
+
+            <div class="contacto">CONTACTO</div>
+        </div>
+
+        <div class="cta-bar" onclick="location.href='pages/tienda.html'">
+            <div class="cta-arrow">&#x2192;</div>
+            <div class="cta-text">COMPRA TUS GOMITAS</div>
+        </div>
+
+        <div class="footer-credit">JUANPA Y TAFUR</div>
+    </div>
+
+    <script>
+        const bgPattern = document.getElementById('bgPattern');
+        const colors = ['#ff4444', '#ff8c00', '#ffd700', '#7cfc00', '#ff69b4', '#87ceeb', '#9b59b6', '#2ecc71'];
+        const rotations = [-25, -15, -5, 0, 5, 15, 25];
+
+        function createBgBear() {
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            const size = 30 + Math.random() * 40;
+            svg.setAttribute('width', size);
+            svg.setAttribute('height', size * 1.3);
+            svg.setAttribute('viewBox', '0 0 100 130');
+            svg.classList.add('bg-bear');
+
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const x = Math.random() * window.innerWidth;
+            const y = Math.random() * window.innerHeight;
+            const rot = rotations[Math.floor(Math.random() * rotations.length)];
+
+            svg.style.left = x + 'px';
+            svg.style.top = y + 'px';
+            svg.style.transform = 'rotate(' + rot + 'deg)';
+
+            svg.innerHTML = '<circle cx="20" cy="20" r="14" fill="' + color + '" opacity="0.8"/>' +
+                '<circle cx="80" cy="20" r="14" fill="' + color + '" opacity="0.8"/>' +
+                '<circle cx="20" cy="20" r="7" fill="' + color + '" opacity="0.5"/>' +
+                '<circle cx="80" cy="20" r="7" fill="' + color + '" opacity="0.5"/>' +
+                '<ellipse cx="50" cy="40" rx="35" ry="28" fill="' + color + '" opacity="0.8"/>' +
+                '<ellipse cx="50" cy="90" rx="30" ry="32" fill="' + color + '" opacity="0.8"/>' +
+                '<ellipse cx="50" cy="90" rx="18" ry="20" fill="' + color + '" opacity="0.5"/>' +
+                '<ellipse cx="20" cy="75" rx="10" ry="18" fill="' + color + '" opacity="0.8"/>' +
+                '<ellipse cx="80" cy="75" rx="10" ry="18" fill="' + color + '" opacity="0.8"/>' +
+                '<ellipse cx="35" cy="118" rx="12" ry="16" fill="' + color + '" opacity="0.8"/>' +
+                '<ellipse cx="65" cy="118" rx="12" ry="16" fill="' + color + '" opacity="0.8"/>';
+
+            bgPattern.appendChild(svg);
+        }
+
+        const bearCount = Math.floor((window.innerWidth * window.innerHeight) / 8000);
+        for (let i = 0; i < bearCount; i++) {
+            createBgBear();
+        }
+    </script>
+</body>
+</html>

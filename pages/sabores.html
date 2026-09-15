@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JUMMY - Sabores</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rubik+Mono+One&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000;
+            min-height: 100vh;
+            overflow-x: hidden;
+            font-family: 'Press Start 2P', monospace;
+            position: relative;
+        }
+
+        /* ===== DOT GRID BACKGROUND ===== */
+        .dot-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+            background-size: 24px 24px;
+            pointer-events: none;
+        }
+
+        /* ===== MAIN CONTAINER ===== */
+        .main-container {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 30px 20px;
+            gap: 40px;
+        }
+
+        /* ===== LEFT: BLUE GUMMY BEAR ===== */
+        .bear-section {
+            flex: 0 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+            padding-left: 30px;
+        }
+
+        .blue-bear {
+            width: 220px;
+            height: 290px;
+            animation: bearGlow 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 25px rgba(0, 150, 255, 0.4)) drop-shadow(0 0 50px rgba(0, 100, 200, 0.2));
+        }
+
+        @keyframes bearGlow {
+            0%, 100% { filter: drop-shadow(0 0 25px rgba(0, 150, 255, 0.4)) drop-shadow(0 0 50px rgba(0, 100, 200, 0.2)); }
+            50% { filter: drop-shadow(0 0 40px rgba(0, 200, 255, 0.6)) drop-shadow(0 0 70px rgba(0, 130, 220, 0.3)); }
+        }
+
+        .btn-volver {
+            background: linear-gradient(135deg, #a8edea, #5cdecf);
+            color: #0d0d0d;
+            border: none;
+            padding: 16px 30px;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 10px;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(168, 237, 234, 0.3), 3px 3px 0 rgba(0,0,0,0.3);
+            line-height: 1.8;
+            text-align: center;
+            letter-spacing: 1px;
+            display: inline-block;
+        }
+
+        .btn-volver:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 0 35px rgba(168, 237, 234, 0.5), 3px 6px 0 rgba(0,0,0,0.3);
+            background: linear-gradient(135deg, #b8f5f0, #6de8d9);
+        }
+
+        /* ===== RIGHT: FLAVORS SECTION ===== */
+        .flavors-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+            padding-right: 30px;
+        }
+
+        /* ===== SABORES TITLE ===== */
+        .sabores-title {
+            font-family: 'Rubik Mono One', sans-serif;
+            font-size: 72px;
+            letter-spacing: 10px;
+            background: linear-gradient(135deg, #00e5ff 0%, #00bcd4 25%, #9c27b0 50%, #e040fb 75%, #ff4081 100%);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 4s ease-in-out infinite;
+            text-shadow: none;
+            position: relative;
+        }
+
+        .sabores-title::after {
+            content: 'SABORES';
+            position: absolute;
+            left: 3px;
+            top: 3px;
+            z-index: -1;
+            background: linear-gradient(135deg, #004d55 0%, #3d0052 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        /* ===== FLAVORS GRID ===== */
+        .flavors-grid {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .flavors-main {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+
+        .flavor-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            animation: cardAppear 0.8s ease-out both;
+        }
+
+        .flavor-card:nth-child(1) { animation-delay: 0.1s; }
+        .flavor-card:nth-child(2) { animation-delay: 0.25s; }
+        .flavor-card:nth-child(3) { animation-delay: 0.4s; }
+        .flavor-card:nth-child(4) { animation-delay: 0.55s; }
+
+        @keyframes cardAppear {
+            from { opacity: 0; transform: translateY(20px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* ===== CAPSULE BORDER CIRCLE ===== */
+        .flavor-circle {
+            width: 170px;
+            height: 170px;
+            border-radius: 50%;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .flavor-circle:hover {
+            transform: scale(1.08) rotate(3deg);
+        }
+
+        .capsule-ring {
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            width: 186px;
+            height: 186px;
+        }
+
+        .flavor-image {
+            width: 170px;
+            height: 170px;
+            border-radius: 50%;
+            overflow: hidden;
+            position: relative;
+            border: 3px solid rgba(255,255,255,0.1);
+        }
+
+        .flavor-image-inner {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .flavor-label {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 14px;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255,255,255,0.3);
+            letter-spacing: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .flavor-card:hover .flavor-label {
+            text-shadow: 0 0 20px rgba(255,255,255,0.6);
+            transform: scale(1.05);
+        }
+
+        /* ===== MIX TROPICAL (larger) ===== */
+        .mix-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            animation: cardAppear 0.8s ease-out 0.7s both;
+        }
+
+        .mix-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .mix-circle:hover {
+            transform: scale(1.08) rotate(-3deg);
+        }
+
+        .mix-capsule-ring {
+            position: absolute;
+            top: -9px;
+            left: -9px;
+            width: 218px;
+            height: 218px;
+        }
+
+        .mix-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid rgba(255,255,255,0.1);
+        }
+
+        .mix-image-inner {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .mix-label {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 13px;
+            color: #ffd700;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+            letter-spacing: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .mix-card:hover .mix-label {
+            text-shadow: 0 0 25px rgba(255, 215, 0, 0.7);
+            transform: scale(1.05);
+        }
+
+        /* ===== FLAVOR COLORS ===== */
+        .fresa-bg { background: radial-gradient(circle at 35% 30%, #ff6b6b 0%, #ee2233 40%, #aa1122 100%); }
+        .mango-bg { background: radial-gradient(circle at 35% 30%, #ffe066 0%, #ffb300 40%, #cc8800 100%); }
+        .uva-bg { background: radial-gradient(circle at 35% 30%, #c084fc 0%, #8b35c8 40%, #5b1a7e 100%); }
+        .sandia-bg { background: radial-gradient(circle at 35% 30%, #6bef6b 0%, #2eb830 40%, #1a7a1c 100%); }
+        .mix-bg { background: radial-gradient(circle at 30% 30%, #ffe066 0%, #ff8c42 25%, #ff5252 50%, #c084fc 75%, #2eb830 100%); }
+
+        /* ===== FOOTER CREDIT ===== */
+        .footer-credit {
+            position: fixed;
+            bottom: 12px;
+            right: 20px;
+            font-size: 9px;
+            color: rgba(255,255,255,0.2);
+            font-family: 'Press Start 2P', monospace;
+            letter-spacing: 2px;
+            z-index: 2;
+        }
+
+        /* ===== SPARKLES ===== */
+        .sparkle {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .sparkle::before, .sparkle::after {
+            content: '';
+            position: absolute;
+            background: currentColor;
+        }
+
+        .sparkle::before {
+            width: 8px;
+            height: 2px;
+            top: 3px;
+            left: 0;
+            border-radius: 2px;
+        }
+
+        .sparkle::after {
+            width: 2px;
+            height: 8px;
+            top: 0;
+            left: 3px;
+            border-radius: 2px;
+        }
+
+        .sparkle:nth-child(1) { top: 8%; left: 52%; color: #00e5ff; animation: sparkleAnim 2s ease-in-out infinite 0s; }
+        .sparkle:nth-child(2) { top: 18%; right: 15%; color: #e040fb; animation: sparkleAnim 2s ease-in-out infinite 0.4s; }
+        .sparkle:nth-child(3) { top: 45%; left: 20%; color: #ffd700; animation: sparkleAnim 2s ease-in-out infinite 0.8s; }
+        .sparkle:nth-child(4) { bottom: 30%; right: 25%; color: #7cfc00; animation: sparkleAnim 2s ease-in-out infinite 1.2s; }
+        .sparkle:nth-child(5) { top: 35%; right: 8%; color: #ff4081; animation: sparkleAnim 2s ease-in-out infinite 1.6s; }
+        .sparkle:nth-child(6) { bottom: 20%; left: 10%; color: #00e5ff; animation: sparkleAnim 2s ease-in-out infinite 0.6s; }
+
+        @keyframes sparkleAnim {
+            0%, 100% { transform: scale(0) rotate(0deg); opacity: 0; }
+            50% { transform: scale(1.5) rotate(45deg); opacity: 1; }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .main-container {
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px 15px;
+            }
+            .bear-section {
+                padding-left: 0;
+            }
+            .blue-bear {
+                width: 140px;
+                height: 185px;
+            }
+            .sabores-title {
+                font-size: 42px;
+                letter-spacing: 5px;
+            }
+            .flavor-circle {
+                width: 130px;
+                height: 130px;
+            }
+            .capsule-ring {
+                width: 146px;
+                height: 146px;
+                top: -8px;
+                left: -8px;
+            }
+            .flavor-image {
+                width: 130px;
+                height: 130px;
+            }
+            .mix-circle {
+                width: 150px;
+                height: 150px;
+            }
+            .mix-capsule-ring {
+                width: 168px;
+                height: 168px;
+                top: -9px;
+                left: -9px;
+            }
+            .mix-image {
+                width: 150px;
+                height: 150px;
+            }
+            .flavors-main {
+                gap: 20px;
+            }
+            .flavor-label { font-size: 11px; }
+            .mix-label { font-size: 11px; }
+            .flavors-section { padding-right: 0; }
+        }
+
+        @media (max-width: 600px) {
+            .sabores-title { font-size: 30px; letter-spacing: 3px; }
+            .flavor-circle { width: 100px; height: 100px; }
+            .capsule-ring { width: 116px; height: 116px; top: -8px; left: -8px; }
+            .flavor-image { width: 100px; height: 100px; }
+            .flavor-label { font-size: 9px; }
+            .mix-circle { width: 120px; height: 120px; }
+            .mix-capsule-ring { width: 138px; height: 138px; top: -9px; left: -9px; }
+            .mix-image { width: 120px; height: 120px; }
+            .mix-label { font-size: 9px; }
+            .btn-volver { font-size: 8px; padding: 12px 20px; }
+            .flavors-grid { gap: 20px; }
+            .flavors-main { gap: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Dot Grid Background -->
+    <div class="dot-grid"></div>
+
+    <!-- Sparkles -->
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+
+    <div class="main-container">
+
+        <!-- LEFT: Blue Gummy Bear + Volver Button -->
+        <div class="bear-section">
+            <div class="blue-bear">
+                <svg viewBox="0 0 220 290" width="220" height="290">
+                    <defs>
+                        <radialGradient id="blueGrad" cx="35%" cy="30%" r="65%">
+                            <stop offset="0%" stop-color="#64b5f6"/>
+                            <stop offset="30%" stop-color="#2196f3"/>
+                            <stop offset="60%" stop-color="#1565c0"/>
+                            <stop offset="100%" stop-color="#0d47a1"/>
+                        </radialGradient>
+                        <radialGradient id="blueInner" cx="40%" cy="35%" r="50%">
+                            <stop offset="0%" stop-color="#90caf9"/>
+                            <stop offset="100%" stop-color="#42a5f5"/>
+                        </radialGradient>
+                        <radialGradient id="blueHighlight" cx="30%" cy="25%" r="30%">
+                            <stop offset="0%" stop-color="rgba(255,255,255,0.5)"/>
+                            <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+                        </radialGradient>
+                        <radialGradient id="blueBelly" cx="50%" cy="40%" r="50%">
+                            <stop offset="0%" stop-color="#64b5f6"/>
+                            <stop offset="100%" stop-color="#2196f3"/>
+                        </radialGradient>
+                        <filter id="glow">
+                            <feGaussianBlur stdDeviation="3" result="blur"/>
+                            <feMerge>
+                                <feMergeNode in="blur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+                    <!-- Shadow -->
+                    <ellipse cx="110" cy="278" rx="55" ry="10" fill="rgba(0,100,200,0.15)"/>
+                    <!-- Ears -->
+                    <circle cx="52" cy="42" r="28" fill="url(#blueGrad)" filter="url(#glow)"/>
+                    <circle cx="168" cy="42" r="28" fill="url(#blueGrad)" filter="url(#glow)"/>
+                    <circle cx="52" cy="42" r="15" fill="url(#blueInner)"/>
+                    <circle cx="168" cy="42" r="15" fill="url(#blueInner)"/>
+                    <circle cx="42" cy="33" r="6" fill="rgba(255,255,255,0.2)"/>
+                    <circle cx="158" cy="33" r="6" fill="rgba(255,255,255,0.2)"/>
+                    <!-- Head -->
+                    <ellipse cx="110" cy="78" rx="64" ry="56" fill="url(#blueGrad)" filter="url(#glow)"/>
+                    <ellipse cx="92" cy="60" rx="30" ry="24" fill="url(#blueHighlight)"/>
+                    <!-- Eyes -->
+                    <ellipse cx="88" cy="70" rx="11" ry="12" fill="#fff"/>
+                    <ellipse cx="132" cy="70" rx="11" ry="12" fill="#fff"/>
+                    <ellipse cx="91" cy="69" rx="6" ry="6.5" fill="#1a1a2e"/>
+                    <ellipse cx="135" cy="69" rx="6" ry="6.5" fill="#1a1a2e"/>
+                    <circle cx="88" cy="65" r="3" fill="#fff"/>
+                    <circle cx="132" cy="65" r="3" fill="#fff"/>
+                    <!-- Nose -->
+                    <ellipse cx="110" cy="90" rx="9" ry="6" fill="url(#blueInner)"/>
+                    <!-- Mouth -->
+                    <path d="M96,100 Q110,112 124,100" stroke="#1565c0" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                    <!-- Body -->
+                    <ellipse cx="110" cy="170" rx="60" ry="66" fill="url(#blueGrad)" filter="url(#glow)"/>
+                    <ellipse cx="90" cy="148" rx="28" ry="30" fill="url(#blueHighlight)"/>
+                    <ellipse cx="110" cy="172" rx="38" ry="42" fill="url(#blueBelly)"/>
+                    <ellipse cx="96" cy="152" rx="15" ry="13" fill="rgba(255,255,255,0.2)"/>
+                    <!-- Arms -->
+                    <ellipse cx="42" cy="148" rx="22" ry="34" fill="url(#blueGrad)" transform="rotate(-20 42 148)" filter="url(#glow)"/>
+                    <ellipse cx="28" cy="128" rx="7" ry="9" fill="rgba(255,255,255,0.15)" transform="rotate(-20 28 128)"/>
+                    <ellipse cx="178" cy="148" rx="22" ry="34" fill="url(#blueGrad)" transform="rotate(20 178 148)" filter="url(#glow)"/>
+                    <ellipse cx="192" cy="128" rx="7" ry="9" fill="rgba(255,255,255,0.15)" transform="rotate(20 192 128)"/>
+                    <!-- Legs -->
+                    <ellipse cx="78" cy="238" rx="24" ry="32" fill="url(#blueGrad)" filter="url(#glow)"/>
+                    <ellipse cx="78" cy="262" rx="18" ry="10" fill="url(#blueInner)"/>
+                    <ellipse cx="142" cy="238" rx="24" ry="32" fill="url(#blueGrad)" filter="url(#glow)"/>
+                    <ellipse cx="142" cy="262" rx="18" ry="10" fill="url(#blueInner)"/>
+                </svg>
+            </div>
+
+            <a href="../index.html" class="btn-volver">VOLVER A LA PÁGINA<br>DEL CONTENIDO</a>
+        </div>
+
+        <!-- RIGHT: Flavors Section -->
+        <div class="flavors-section">
+
+            <h1 class="sabores-title">SABORES</h1>
+
+            <div class="flavors-grid">
+                <!-- 2x2 Main Flavors -->
+                <div class="flavors-main">
+                    <!-- FRESA -->
+                    <div class="flavor-card">
+                        <div class="flavor-circle">
+                            <svg class="capsule-ring" viewBox="0 0 186 186">
+                                <defs>
+                                    <path id="capPath" d="M93,8 a85,85 0 1,1 0,170 a85,85 0 1,1 0,-170" fill="none"/>
+                                </defs>
+                                <use href="#capPath" stroke="#00e5ff" stroke-width="4" fill="none" stroke-dasharray="8 5" stroke-linecap="round"/>
+                                <use href="#capPath" stroke="#e040fb" stroke-width="4" fill="none" stroke-dasharray="8 5" stroke-dashoffset="13" stroke-linecap="round"/>
+                                <use href="#capPath" stroke="#ffd700" stroke-width="4" fill="none" stroke-dasharray="8 5" stroke-dashoffset="26" stroke-linecap="round"/>
+                                <use href="#capPath" stroke="#9c27b0" stroke-width="4" fill="none" stroke-dasharray="8 5" stroke-dashoffset="39" stroke-linecap="round"/>
+                            </svg>
+                            <div class="flavor-image fresa-bg">
+                                <div class="flavor-image-inner">
+                                    <svg viewBox="0 0 120 120" width="100" height="100">
+                                        <ellipse cx="60" cy="68" rx="28" ry="32" fill="#ee2233"/>
+                                        <ellipse cx="60" cy="68" rx="28" ry="32" fill="none" stroke="#cc1122" stroke-width="1"/>
+                                        <ellipse cx="48" cy="55" rx="2" ry="3" fill="#ffd700" transform="rotate(-10 48 55)"/>
+                                        <ellipse cx="60" cy="50" rx="2" ry="3" fill="#ffd700"/>
+                                        <ellipse cx="72" cy="55" rx="2" ry="3" fill="#ffd700" transform="rotate(10 72 55)"/>
+                                        <ellipse cx="48" cy="70" rx="2" ry="3" fill="#ffd700" transform="rotate(-10 48 70)"/>
+                                        <ellipse cx="72" cy="70" rx="2" ry="3" fill="#ffd700" transform="rotate(10 72 70)"/>
+                                        <ellipse cx="60" cy="80" rx="2" ry="3" fill="#ffd700"/>
+                                        <ellipse cx="55" cy="90" rx="2" ry="3" fill="#ffd700" transform="rotate(-5 55 90)"/>
+                                        <ellipse cx="65" cy="90" rx="2" ry="3" fill="#ffd700" transform="rotate(5 65 90)"/>
+                                        <ellipse cx="48" cy="58" rx="8" ry="12" fill="rgba(255,255,255,0.15)" transform="rotate(-15 48 58)"/>
+                                        <path d="M45,38 Q48,28 55,34" fill="#2eb830" stroke="#1a7a1c" stroke-width="0.5"/>
+                                        <path d="M55,36 Q60,26 65,36" fill="#2eb830" stroke="#1a7a1c" stroke-width="0.5"/>
+                                        <path d="M65,34 Q72,28 75,38" fill="#2eb830" stroke="#1a7a1c" stroke-width="0.5"/>
+                                        <line x1="60" y1="36" x2="60" y2="28" stroke="#2eb830" stroke-width="2"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="flavor-label" style="color: #ff4444;">FRESA</span>
+                    </div>
+
+                    <!-- MANGO -->
+                    <div class="flavor-card">
+                        <div class="flavor-circle">
+                            <svg class="capsule-ring" viewBox="0 0 186 186">
+                                <use href="#capPath" stroke="#00e5ff" stroke-width="4" fill="none" stroke-dasharray="8 5" stroke-linecap="round"/>
+                                <use href="#capPath" stroke="#e040fb" stroke-width="4" fill="none" stroke-dasharray="8 5" stroke-dashoffset="13" stroke-linecap="round"/>
+                                <use href="#capPath" stroke="#ffd700" stroke-width="4" fill="none" stroke-dasharray="8 5" stroke-dashoffset="26" stroke-linecap="round"/>
+                                <use href="#capPath" stroke="#9c27b0" stroke-width="4" fill="none" stroke-dasharray="8 5" stroke-dashoffset="39" stroke-linecap="round"/>
+                            </svg>
+                            <div class="flavor-image mango-bg">
+                                <div class="flavor-image-inner">
+                                    <svg viewBox="0 0 120 120" width="100" height="100">
+                                        <ellipse cx="60" cy="62" rx="24" ry="34" fill="#ffb300" transform="rotate(-15 60 62)"/>
+                                        <ellipse cx="60" cy="62" rx="24" ry="34" fill="none" stroke="#cc8800" stroke-width="1" transform="rotate(-15 60 62)"/>
+                                        <ellipse cx="50" cy="52" rx="10" ry="18" fill="#ffe066" transform="rotate(-20 50 52)" opacity="0.6"/>
+                                        <ellipse cx="48" cy="48" rx="6" ry="10" fill="rgba(255,255,255,0.15)" transform="rotate(-20 48 48)"/>
+                                        <path d="M74,30 Q78,22 76,18" stroke="#5b3a10" stroke-width="2" fill="none" stroke-linecap="round"/>
+                                        <path d="M76,22 Q82,16 86,22" fill="#2eb830" stroke="#1a7a1c" stroke-width="0.5"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="flavor-label" style="color: #ffb300;">MANGO</span>
+                    </div>
+
+                    <!-- UVA -->
+                    <div class="flavor-card">
+                        <div class="flavor-circle">
+                            <svg class="capsule-ring" viewBox="0 0 186 186">
+                                <use href="#capPath" stroke="#00e5ff" stroke-width="4" fill="none" stroke-dasharray="8 5" stroke-linecap="round"/>
+                                <use href="#capPath" stroke="#e040fb" stroke-width="4" fill="none" stroke-dasharray="8 5" stroke-dashoffset="13" stroke-linecap="round"/>
+                                <use href="#capPath" stroke="#ffd700" stroke-width="4" fill="none" stroke-dasharray="8 5" stroke-dashoffset="26" stroke-linecap="round"/>
+                                <use href="#capPath" stroke="#9c27b0" stroke-width="4" fill="none" stroke-dasharray="8 5" stroke-dashoffset="39" stroke-linecap="round"/>
+                            </svg>
+                            <div class="flavor-image uva-bg">
+                                <div class="flavor-image-inner">
+                                    <svg viewBox="0 0 120 120" width="100" height="100">
+                                        <circle cx="50" cy="52" r="11" fill="#8b35c8"/>
+                                        <circle cx="70" cy="52" r="11" fill="#9146d4"/>
+                                        <circle cx="40" cy="67" r="11" fill="#7b28b8"/>
+                                        <circle cx="60" cy="65" r="12" fill="#8b35c8"/>
+                                        <circle cx="80" cy="67" r="11" fill="#9146d4"/>
+                                        <circle cx="50" cy="80" r="11" fill="#7b28b8"/>
+                                        <circle cx="70" cy="80" r="11" fill="#8b35c8"/>
+                                        <ellipse cx="47" cy="49" rx="3" ry="4" fill="rgba(255,255,255,0.2)"/>
+                                        <ellipse cx="67" cy="49" rx="3" ry="4" fill="rgba(255,255,255,0.2)"/>
+                                        <ellipse cx="57" cy="62" rx="3" ry="4" fill="rgba(255,255,255,0.2)"/>
+                                        <ellipse cx="47" cy="77" rx="3" ry="4" fill="rgba(255,255,255,0.2)"/>
+                                        <ellipse cx="67" cy="77" rx="3" ry="4" fill="rgba(255,255,255,0.2)"/>
+                                        <path d="M60,38 L62,26" stroke="#5b3a10" stroke-width="2" stroke-linecap="round"/>
+                                        <path d="M62,28 Q55,20 48,28" fill="#2eb830" stroke="#1a7a1c" stroke-width="0.5"/>
+                                        <path d="M62,26 Q70,18 76,26" fill="#2eb830" stroke="#1a7a1c" stroke-width="0.5"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="flavor-label" style="color: #c084fc;">UVA</span>
+                    </div>
+
+                    <!-- SANDIA -->
+                    <div class="flavor-card">
+                        <div class="flavor-circle">
+                            <svg class="capsule-ring" viewBox="0 0 186 186">
+                                <use href="#capPath" stroke="#00e5ff" stroke-width="4" fill="none" stroke-dasharray="8 5" stroke-linecap="round"/>
+                                <use href="#capPath" stroke="#e040fb" stroke-width="4" fill="none" stroke-dasharray="8 5" stroke-dashoffset="13" stroke-linecap="round"/>
+                                <use href="#capPath" stroke="#ffd700" stroke-width="4" fill="none" stroke-dasharray="8 5" stroke-dashoffset="26" stroke-linecap="round"/>
+                                <use href="#capPath" stroke="#9c27b0" stroke-width="4" fill="none" stroke-dasharray="8 5" stroke-dashoffset="39" stroke-linecap="round"/>
+                            </svg>
+                            <div class="flavor-image sandia-bg">
+                                <div class="flavor-image-inner">
+                                    <svg viewBox="0 0 120 120" width="100" height="100">
+                                        <path d="M30,85 A45,45 0 0,1 90,85 Z" fill="#ee2233"/>
+                                        <path d="M30,85 A45,45 0 0,1 90,85 Z" fill="none" stroke="#cc1122" stroke-width="1"/>
+                                        <path d="M30,85 A45,45 0 0,1 90,85" stroke="#2eb830" stroke-width="8" fill="none"/>
+                                        <path d="M30,85 A45,45 0 0,1 90,85" stroke="#1a7a1c" stroke-width="2" fill="none"/>
+                                        <path d="M32,82 A43,43 0 0,1 88,82" stroke="#6bef6b" stroke-width="3" fill="none"/>
+                                        <ellipse cx="48" cy="72" rx="2" ry="3" fill="#333" transform="rotate(-15 48 72)"/>
+                                        <ellipse cx="60" cy="68" rx="2" ry="3" fill="#333"/>
+                                        <ellipse cx="72" cy="72" rx="2" ry="3" fill="#333" transform="rotate(15 72 72)"/>
+                                        <ellipse cx="54" cy="80" rx="2" ry="3" fill="#333" transform="rotate(-8 54 80)"/>
+                                        <ellipse cx="66" cy="80" rx="2" ry="3" fill="#333" transform="rotate(8 66 80)"/>
+                                        <ellipse cx="48" cy="65" rx="6" ry="8" fill="rgba(255,255,255,0.1)" transform="rotate(-10 48 65)"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="flavor-label" style="color: #6bef6b;">SANDIA</span>
+                    </div>
+                </div>
+
+                <!-- MIX TROPICAL -->
+                <div class="mix-card">
+                    <div class="mix-circle">
+                        <svg class="mix-capsule-ring" viewBox="0 0 218 218">
+                            <defs>
+                                <path id="mixCapPath" d="M109,9 a100,100 0 1,1 0,200 a100,100 0 1,1 0,-200" fill="none"/>
+                            </defs>
+                            <use href="#mixCapPath" stroke="#00e5ff" stroke-width="5" fill="none" stroke-dasharray="9 6" stroke-linecap="round"/>
+                            <use href="#mixCapPath" stroke="#e040fb" stroke-width="5" fill="none" stroke-dasharray="9 6" stroke-dashoffset="15" stroke-linecap="round"/>
+                            <use href="#mixCapPath" stroke="#ffd700" stroke-width="5" fill="none" stroke-dasharray="9 6" stroke-dashoffset="30" stroke-linecap="round"/>
+                            <use href="#mixCapPath" stroke="#9c27b0" stroke-width="5" fill="none" stroke-dasharray="9 6" stroke-dashoffset="45" stroke-linecap="round"/>
+                        </svg>
+                        <div class="mix-image mix-bg">
+                            <div class="mix-image-inner">
+                                <svg viewBox="0 0 140 140" width="130" height="130">
+                                    <ellipse cx="42" cy="58" rx="14" ry="20" fill="#ffb300" transform="rotate(-10 42 58)"/>
+                                    <path d="M38,38 L40,30 L44,38" fill="#2eb830"/>
+                                    <path d="M44,38 L48,30 L50,38" fill="#2eb830"/>
+                                    <path d="M75,40 Q95,35 100,50 Q90,55 75,48" fill="#ffe066" stroke="#cc8800" stroke-width="0.5"/>
+                                    <circle cx="55" cy="90" r="12" fill="#6bef6b"/>
+                                    <circle cx="55" cy="90" r="8" fill="#90ee90"/>
+                                    <ellipse cx="55" cy="90" rx="1" ry="1" fill="#333"/>
+                                    <line x1="55" y1="90" x2="55" y2="83" stroke="#2eb830" stroke-width="0.5"/>
+                                    <line x1="55" y1="90" x2="60" y2="86" stroke="#2eb830" stroke-width="0.5"/>
+                                    <line x1="55" y1="90" x2="50" y2="86" stroke="#2eb830" stroke-width="0.5"/>
+                                    <line x1="55" y1="90" x2="58" y2="95" stroke="#2eb830" stroke-width="0.5"/>
+                                    <line x1="55" y1="90" x2="52" y2="95" stroke="#2eb830" stroke-width="0.5"/>
+                                    <ellipse cx="90" cy="82" rx="14" ry="16" fill="#e040fb"/>
+                                    <ellipse cx="90" cy="82" rx="10" ry="12" fill="#f5f0f8"/>
+                                    <circle cx="86" cy="80" r="1" fill="#333"/>
+                                    <circle cx="90" cy="78" r="1" fill="#333"/>
+                                    <circle cx="94" cy="80" r="1" fill="#333"/>
+                                    <circle cx="88" cy="84" r="1" fill="#333"/>
+                                    <circle cx="92" cy="84" r="1" fill="#333"/>
+                                    <path d="M78,70 L75,64" stroke="#9c27b0" stroke-width="1.5" stroke-linecap="round"/>
+                                    <path d="M82,68 L80,62" stroke="#9c27b0" stroke-width="1.5" stroke-linecap="round"/>
+                                    <path d="M98,68 L100,62" stroke="#9c27b0" stroke-width="1.5" stroke-linecap="round"/>
+                                    <path d="M102,70 L105,64" stroke="#9c27b0" stroke-width="1.5" stroke-linecap="round"/>
+                                    <path d="M25,95 A15,15 0 0,1 45,95" fill="#ee2233" stroke="#2eb830" stroke-width="3"/>
+                                    <path d="M100,100 A18,18 0 0,1 118,112" fill="#ff8c42" stroke="#e67e22" stroke-width="1"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="mix-label">MIX TROPICAL</span>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="footer-credit">JUANPA Y TAFUR</div>
+
+</body>
+</html>

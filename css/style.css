@@ -1,0 +1,251 @@
+  *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:'Orbitron', sans-serif;
+    }
+
+    body{
+      height:100vh;
+      background:cover no-repeat;
+      overflow:hidden;
+      position:relative;
+    background-image: url("img/1.png");
+
+    }
+
+    /* Oscurecer fondo */
+    body::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:rgba(0,0,0,0.35);
+      backdrop-filter:blur(3px);
+    }
+
+    /* NAVBAR */
+    nav{
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:25px 60px;
+      z-index:10;
+    }
+
+    .logo-nav{
+      color:white;
+      font-size:2rem;
+      font-weight:bold;
+      letter-spacing:3px;
+    }
+
+    .menu{
+      display:flex;
+      gap:35px;
+    }
+
+    .menu a{
+      color:white;
+      text-decoration:none;
+      font-size:1rem;
+      transition:0.3s;
+      position:relative;
+    }
+
+    .menu a:hover{
+      color:#00ffff;
+    }
+
+    .menu a::after{
+      content:"";
+      position:absolute;
+      left:0;
+      bottom:-6px;
+      width:0%;
+      height:2px;
+      background:#00ffff;
+      transition:0.3s;
+    }
+
+    .menu a:hover::after{
+      width:100%;
+    }
+
+    /* CONTENEDOR CENTRAL */
+    .hero{
+      position:relative;
+      width:80%;
+      height:75vh;
+      margin:auto;
+      top:120px;
+
+      background:linear-gradient(
+        180deg,
+        rgba(0,123,255,0.75),
+        rgba(0,255,255,0.35)
+      );
+
+      border:3px solid #00ffcc;
+      border-radius:40px;
+
+      backdrop-filter:blur(12px);
+
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      flex-direction:column;
+
+      z-index:2;
+
+      box-shadow:
+      0 0 40px rgba(0,255,255,0.35),
+      inset 0 0 20px rgba(255,255,255,0.2);
+      
+    }
+
+    /* LOGO */
+    .hero h1{
+      font-size:7rem;
+      color:black;
+      transform:rotate(-5deg);
+      margin-bottom:10px;
+    }
+
+    .hero img{
+      width:140px;
+      margin-bottom:20px;
+    }
+
+    .hero p{
+      color:white;
+      letter-spacing:4px;
+      font-size:1.1rem;
+    }
+
+    /* TEXTO LATERAL */
+    .side-text{
+      position:absolute;
+      right:-80px;
+      top:50%;
+      transform:translateY(-50%) rotate(90deg);
+      color:white;
+      font-size:1.3rem;
+      letter-spacing:5px;
+    }
+
+    /* OSITOS */
+    .bear{
+      position:absolute;
+      width:240px;
+      opacity:0.15;
+    }
+
+    .bear.top{
+      top:20px;
+      right:50px;
+      transform:rotate(180deg);
+    }
+
+    .bear.bottom{
+      bottom:20px;
+      left:50px;
+    }
+
+    @media(max-width:900px){
+
+      nav{
+        flex-direction:column;
+        gap:20px;
+      }
+
+      .menu{
+        flex-wrap:wrap;
+        justify-content:center;
+      }
+
+      .hero{
+        width:92%;
+      }
+
+      .hero h1{
+        font-size:3.5rem;
+      }
+
+      .hero img{
+        width:90px;
+      }
+
+      .side-text{
+        display:none;
+      }
+
+    }
+
+    /* PRODUCTOS */
+
+.products{
+  width:90%;
+  margin:150px auto;
+  position:relative;
+  z-index:2;
+}
+
+.products h2{
+  text-align:center;
+  color:white;
+  font-size:3rem;
+  margin-bottom:50px;
+  letter-spacing:5px;
+}
+
+.products-container{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(250px,1fr));
+  gap:30px;
+}
+
+.card{
+  background:rgba(255,255,255,0.1);
+  border:2px solid rgba(0,255,255,0.4);
+  backdrop-filter:blur(10px);
+  border-radius:25px;
+  overflow:hidden;
+  transition:0.4s;
+  box-shadow:0 0 20px rgba(0,255,255,0.2);
+}
+
+.card:hover{
+  transform:translateY(-10px) scale(1.03);
+  box-shadow:0 0 30px rgba(0,255,255,0.5);
+}
+
+.card img{
+  width:100%;
+  height:220px;
+  object-fit:cover;
+}
+
+.card h3{
+  color:white;
+  font-size:1.4rem;
+  padding:20px 20px 10px;
+}
+
+.card p{
+  color:#ddd;
+  font-size:0.95rem;
+  padding:0 20px;
+  line-height:1.5;
+}
+
+.card span{
+  display:block;
+  color:#00ffff;
+  font-size:1.3rem;
+  font-weight:bold;
+  padding:20px;
+}
